@@ -35,7 +35,7 @@ jobs:
         wget https://github.com/aquasecurity/trivy/releases/download/v${version}/trivy_${version}_Linux-64bit.tar.gz
         tar zxvf trivy_${version}_Linux-64bit.tar.gz
       env:
-        version: 0.2.1
+        version: 0.4.4
     
     - name: Scan container
       run: ./trivy --exit-code 0 --severity CRITICAL --no-progress --light webgoat/webgoat-8.0
