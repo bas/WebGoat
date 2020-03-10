@@ -23,7 +23,7 @@ public class UserRepositoryTest {
 
         user = userRepository.findByUsername("test");
 
-        Assertions.assertThat(user.getUsername()).isEqualTo("test123");
+        Assertions.assertThat(user.getUsername()).isEqualTo("test");
         Assertions.assertThat(user.getPassword()).isEqualTo("password");
     }
 }
