@@ -27,17 +27,18 @@ jobs:
     - name: Docker build
       run: |
         docker build -t webgoat/webgoat-8.0 webgoat-server
-    
-    - name: Install Trivy
-      run:  |
-        wget https://github.com/aquasecurity/trivy/releases/download/v${version}/trivy_${version}_Linux-64bit.tar.gz
-        tar zxvf trivy_${version}_Linux-64bit.tar.gz
-      env:
-        version: 0.4.4
-    
-    - name: Scan container
-      run: ./trivy --exit-code 0 --severity CRITICAL --no-progress --light webgoat/webgoat-8.0
-    
+      
+    - name: Run the Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
+      uses: anchore/scan-action@main
+      with:
+        image: "webgoat/webgoat-8.0"
+        acs-report-enable: true
+
+    - name: Upload Anchore Scan Report
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: results.sarif
+
     - name: Docker push
       run: |
         docker tag webgoat/webgoat-8.0 docker.pkg.github.com/bas/webgoat/webgoat-8.0:${{ github.sha }}
